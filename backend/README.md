@@ -41,3 +41,20 @@ To setup the project, install all the depedencies first, execute command `yarn` 
    ```sh
    yarn prisma generate
    ```
+
+# Usage
+
+To start the backend,
+
+1. Make sure the correct Postgresql have been started
+2. Start using
+
+   ```sh
+   yarn dev
+   ```
+
+3. Go to the link shown in the terminal
+
+## API Documentation
+
+All API routes are documented in `/docs` of the backend.
