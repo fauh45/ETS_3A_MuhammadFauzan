@@ -1,0 +1,14 @@
+{
+  "name": "@dvdrental/backend",
+  "version": "0.1.0",
+  "description": "DVD Rental backend",
+  "main": "build/index.js",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "prisma": "^3.3.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^3.3.0"
+  }
+}
