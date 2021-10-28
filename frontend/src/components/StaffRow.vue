@@ -157,15 +157,11 @@ const updateRow = () => {
         <td>
             <button
                 class="button"
-                :disabled="deleteMutation.isLoading.value || data.store_connected"
+                :disabled="deleteMutation.isLoading.value"
                 @click="() => toggleEditMode()"
                 v-if="!editMode"
             >
-                <abbr
-                    v-if="data.store_connected"
-                    title="Staff that are connected to store cannot be updated"
-                >Update</abbr>
-                <p v-else>Update</p>
+                Update
             </button>
             <button
                 class="button is-primary"

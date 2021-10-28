@@ -106,7 +106,8 @@ const StaffController: FastifyPluginAsync = async (app, opts) => {
     "/:staff_id",
     {
       schema: {
-        description: "Update a new staff according to its staff id",
+        description:
+          "Update a new staff according to its staff id. Note that updating store_id will result in nothing done",
         tags: ["Staff"],
         params: UpdateStaffParams,
         body: UpdateStaffBody,
@@ -132,9 +133,10 @@ const StaffController: FastifyPluginAsync = async (app, opts) => {
           picture: picture ? Buffer.from(picture, "base64") : undefined,
         };
 
-        if (store_id) {
-          data.store_id = store_id;
-        }
+        // Will result in a error for Staff that have a connection with Store
+        // if (store_id) {
+        //   data.store_id = store_id;
+        // }
 
         if (address_id) {
           data.address = {
