@@ -3,6 +3,7 @@ import axios from "axios";
 import { ref } from "vue";
 import { useMutation, useQueryClient } from "vue-query";
 import { Staff } from "./staff.typedef";
+import SearchAddress from "./SearchAddress.vue";
 
 const props = defineProps<{ data: Staff }>()
 
@@ -92,7 +93,12 @@ const updateRow = () => {
             <p v-else>{{ data.last_name }}</p>
         </td>
         <td>
-            <input v-if="editMode" class="input" type="number" v-model="staffField.address_id" disabled />
+            <SearchAddress
+                v-if="editMode"
+                :address-id="staffField.address_id"
+                @update-id="(id) => staffField.address_id = id"
+                :key="'search' + data.staff_id"
+            />
             <p v-else>{{ data.address_id }}</p>
         </td>
         <td>
@@ -110,7 +116,13 @@ const updateRow = () => {
             <p v-else>{{ data.email }}</p>
         </td>
         <td>
-            <input v-if="editMode" class="input" type="number" v-model="staffField.store_id" disabled />
+            <input
+                v-if="editMode"
+                class="input"
+                type="number"
+                v-model="staffField.store_id"
+                disabled
+            />
             <p v-else>{{ data.store_id }}</p>
         </td>
         <td>
@@ -145,10 +157,16 @@ const updateRow = () => {
         <td>
             <button
                 class="button"
-                :disabled="deleteMutation.isLoading.value"
+                :disabled="deleteMutation.isLoading.value || data.store_connected"
                 @click="() => toggleEditMode()"
                 v-if="!editMode"
-            >Update</button>
+            >
+                <abbr
+                    v-if="data.store_connected"
+                    title="Staff that are connected to store cannot be updated"
+                >Update</abbr>
+                <p v-else>Update</p>
+            </button>
             <button
                 class="button is-primary"
                 :class="{ 'is-loading': updateMutation.isLoading.value }"

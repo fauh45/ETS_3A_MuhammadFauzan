@@ -3,6 +3,7 @@ import fastify from "fastify";
 
 import fastifyCors from "fastify-cors";
 import fastifySwagger from "fastify-swagger";
+import AddressController from "./controller/address";
 import StaffController from "./controller/staff";
 
 const app = fastify({
@@ -43,11 +44,15 @@ const registerPlugins = async () => {
         title: "DVD Rental Backend",
         version: "0.1.0",
       },
-      tags: [{ name: "Staff", description: "Staff CRUD APIs" }],
+      tags: [
+        { name: "Staff", description: "Staff CRUD APIs" },
+        { name: "Address", description: "Address Search API" },
+      ],
     },
   });
 
   await app.register(StaffController, { prefix: "/staff" });
+  await app.register(AddressController, { prefix: "/address" });
 };
 
 registerPlugins()
