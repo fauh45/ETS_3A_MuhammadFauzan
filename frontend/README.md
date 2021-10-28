@@ -1,11 +1,29 @@
-# Vue 3 + Typescript + Vite
+# DVD Rental Staff Frontend
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Frontend of midterm tasks for web development class of Bandung State Polytechnic 2021.
 
-## Recommended IDE Setup
+# Setup
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+To run the app there are a few requirements to be installed and setup on your device,
 
-## Type Support For `.vue` Imports in TS
+1. NodeJS
+2. Yarn
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's `.vue` type support plugin by running `Volar: Switch TS Plugin on/off` from VSCode command palette.
+After all of the requirement are installed and setup. Then follow these tutorial below sequentially.
+
+## Depedenices Setup
+
+To install all required depedencies run the command `yarn` in this `frontend` folder.
+
+# Usage
+
+First start the development server of the frontend,
+
+1. Make sure the backend have been started
+2. Start using
+
+   ```sh
+   yarn dev
+   ```
+
+3. Follow the shown URL to open the frontend
