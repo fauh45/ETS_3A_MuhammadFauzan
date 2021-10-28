@@ -68,12 +68,19 @@ const StaffController: FastifyPluginAsync = async (app, opts) => {
       },
     },
     async (req, res) => {
+      const { address_id, store_id, picture, ...rest } = req.body;
+
       const response = await app.prisma.staff.create({
         data: {
-          ...req.body,
-          picture: req.body.picture
-            ? Buffer.from(req.body.picture, "base64")
-            : null,
+          ...rest,
+          picture: picture ? Buffer.from(picture, "base64") : null,
+          store_id: store_id,
+          store: {
+            connect: { store_id: store_id },
+          },
+          address: {
+            connect: { address_id: address_id },
+          },
         },
       });
 
@@ -104,15 +111,26 @@ const StaffController: FastifyPluginAsync = async (app, opts) => {
     },
     async (req, res) => {
       try {
+        const { store_id, address_id, picture, ...rest } = req.body;
+
         const response = await app.prisma.staff.update({
           where: {
             staff_id: req.params.staff_id,
           },
           data: {
-            ...req.body,
-            picture: req.body.picture
-              ? Buffer.from(req.body.picture, "base64")
-              : undefined,
+            ...rest,
+            store_id: store_id,
+            picture: picture ? Buffer.from(picture, "base64") : undefined,
+            address: {
+              connect: {
+                address_id: address_id,
+              },
+            },
+            store: {
+              connect: {
+                store_id: store_id,
+              },
+            },
           },
         });
 
