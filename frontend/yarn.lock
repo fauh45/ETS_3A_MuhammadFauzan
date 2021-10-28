@@ -1038,6 +1038,11 @@ vscode-vue-languageservice@^0.27.0:
     vscode-pug-languageservice "^0.27.24"
     vscode-typescript-languageservice "^0.27.25"
 
+vue-debounce@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/vue-debounce/-/vue-debounce-3.0.1.tgz#5975e37efdb5d9a15ffa7d206a85b4aa97f09f51"
+  integrity sha512-UzE4KDcopDihw0I5TmdK7syyuhu5+iuRD+AXhrRL7Y5C5o2EOZYwDhUNOAP4Z050hPmIj5U8vhMcYzePCTMAJw==
+
 vue-demi@^0.10.1:
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.10.1.tgz#229b81395510f02f4ee255344557a12cc0120930"

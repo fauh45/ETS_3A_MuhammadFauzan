@@ -21,7 +21,7 @@ const getStaff = async (next: number | null) => {
 }
 
 const query = useInfiniteQuery<GetStaffResponse>("staff", (context) => getStaff(context.pageParam),
-  { getNextPageParam: (last, pages) => last.next || undefined, keepPreviousData: true, staleTime: 1000 * 30 }
+  { getNextPageParam: (last, pages) => last.next || undefined, keepPreviousData: true, staleTime: 1000 * 60 * 2 }
 )
 </script>
 

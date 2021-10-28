@@ -3,6 +3,7 @@ import axios from "axios";
 import { ref } from "vue";
 import { useMutation, useQueryClient } from "vue-query";
 import { Staff } from "./staff.typedef";
+import SearchAddress from "./SearchAddress.vue";
 
 const props = defineProps<{
     state: boolean
@@ -12,7 +13,7 @@ const emit = defineEmits<{
     (event: "toggle"): void
 }>()
 
-const staffField = ref<Omit<Staff, "staff_id">>({
+const staffField = ref<Omit<Staff, "staff_id" | "store_connected">>({
     first_name: "",
     last_name: "",
     active: true,
@@ -21,11 +22,11 @@ const staffField = ref<Omit<Staff, "staff_id">>({
     username: "",
     password: "",
     picture: null,
-    store_id: 1
+    store_id: 1,
 })
 
 const queryClient = useQueryClient()
-const newMutation = useMutation((data: Omit<Staff, "staff_id">) => axios.post(import.meta.env.VITE_BACKEND_URL + "/staff/", data), {
+const newMutation = useMutation((data: Omit<Staff, "staff_id" | "store_connected">) => axios.post(import.meta.env.VITE_BACKEND_URL + "/staff/", data), {
     onSuccess: () => {
         queryClient.refetchQueries("staff")
 
@@ -39,7 +40,7 @@ const newMutation = useMutation((data: Omit<Staff, "staff_id">) => axios.post(im
 })
 
 const newRow = () => {
-    const updatedValue: Omit<Staff, "staff_id"> = {
+    const updatedValue: Omit<Staff, "staff_id" | "store_connected"> = {
         ...staffField.value,
         email: staffField.value.email === "" ? null : staffField.value.email,
         password: staffField.value.password === "" ? null : staffField.value.password
@@ -56,7 +57,12 @@ const newRow = () => {
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title">Add new Staff</p>
-                <button class="delete" aria-label="close" @click="() => { emit('toggle') }" :disabled="newMutation.isLoading.value"></button>
+                <button
+                    class="delete"
+                    aria-label="close"
+                    @click="() => { emit('toggle') }"
+                    :disabled="newMutation.isLoading.value"
+                ></button>
             </header>
 
             <section class="modal-card-body">
@@ -83,13 +89,6 @@ const newRow = () => {
                             maxlength="45"
                             v-model="staffField.last_name"
                         />
-                    </div>
-                </div>
-
-                <div class="field">
-                    <label class="label">Address Id</label>
-                    <div class="control">
-                        <input class="input" type="number" v-model="staffField.address_id" disabled />
                     </div>
                 </div>
 
@@ -142,6 +141,16 @@ const newRow = () => {
                             minlength="0"
                             maxlength="40"
                             v-model="staffField.password"
+                        />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Address Id</label>
+                    <div class="control">
+                        <SearchAddress
+                            :address-id="staffField.address_id"
+                            @update-id="(id) => staffField.address_id = id"
                         />
                     </div>
                 </div>

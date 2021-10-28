@@ -41,11 +41,21 @@ const StaffController: FastifyPluginAsync = async (app, opts) => {
         orderBy: {
           staff_id: "asc",
         },
+        include: {
+          store: true,
+        },
       });
 
-      const encoded_response = response.map((val) => {
-        return { ...val, picture: val.picture?.toString("base64") || null };
-      });
+      const encoded_response: GetAllStaffResponse["data"] = response.map(
+        (val) => {
+          const { store, ...rest } = val;
+          return {
+            ...rest,
+            picture: val.picture?.toString("base64") || null,
+            store_connected: Boolean(store),
+          };
+        }
+      );
 
       return res.code(200).send({
         next:
@@ -75,9 +85,6 @@ const StaffController: FastifyPluginAsync = async (app, opts) => {
           ...rest,
           picture: picture ? Buffer.from(picture, "base64") : null,
           store_id: store_id,
-          store: {
-            connect: { store_id: store_id },
-          },
           address: {
             connect: { address_id: address_id },
           },
@@ -111,27 +118,37 @@ const StaffController: FastifyPluginAsync = async (app, opts) => {
     },
     async (req, res) => {
       try {
+        // Fastify somehow did not make sure that staff_id are not in body
+        // even though schema did not have staff_id inside it
+        // @ts-ignore
+        delete req.body.staff_id;
+        // @ts-ignore
+        delete req.body.store_connected;
+
         const { store_id, address_id, picture, ...rest } = req.body;
+
+        let data: any = {
+          ...rest,
+          picture: picture ? Buffer.from(picture, "base64") : undefined,
+        };
+
+        if (store_id) {
+          data.store_id = store_id;
+        }
+
+        if (address_id) {
+          data.address = {
+            connect: {
+              address_id: address_id,
+            },
+          };
+        }
 
         const response = await app.prisma.staff.update({
           where: {
             staff_id: req.params.staff_id,
           },
-          data: {
-            ...rest,
-            store_id: store_id,
-            picture: picture ? Buffer.from(picture, "base64") : undefined,
-            address: {
-              connect: {
-                address_id: address_id,
-              },
-            },
-            store: {
-              connect: {
-                store_id: store_id,
-              },
-            },
-          },
+          data: data,
         });
 
         return res.code(200).send({
@@ -139,6 +156,8 @@ const StaffController: FastifyPluginAsync = async (app, opts) => {
           picture: response.picture?.toString("base64") || null,
         });
       } catch (err) {
+        app.log.error(err);
+
         return res.code(404).send({ code: 404, message: "Not Found" });
       }
     }

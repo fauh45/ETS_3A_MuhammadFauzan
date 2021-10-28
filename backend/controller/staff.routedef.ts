@@ -36,7 +36,10 @@ export type GetAllStaffParams = Static<typeof GetAllStaffParams>;
 
 export const GetAllStaffResponse = Type.Object({
   next: Type.Union([Staff.properties.staff_id, Type.Null()]),
-  data: Type.Array(Staff, { minItems: 0 }),
+  data: Type.Array(
+    Type.Intersect([Staff, Type.Object({ store_connected: Type.Boolean() })]),
+    { minItems: 0 }
+  ),
 });
 export type GetAllStaffResponse = Static<typeof GetAllStaffResponse>;
 

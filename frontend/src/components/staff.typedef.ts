@@ -9,4 +9,5 @@ export type Staff = {
   username: string;
   password: string | null;
   picture: string | null;
+  store_connected: boolean
 };
